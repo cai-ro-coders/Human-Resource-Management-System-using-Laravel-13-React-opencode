@@ -1,0 +1,325 @@
+AI
+
+Create a Human Resource Management System – ERD (database schema)
+
+1. Users (Admins / HR Accounts)
+	- role_id (FK → roles.id)
+2. Roles & Permissions
+roles
+	- id (PK)
+	- name (Admin, HR Manager)
+	- created_at
+	- updated_at
+
+	permissions
+	- id (PK)
+	- name
+	- created_at
+	- updated_at
+
+	role_permission
+	- id (PK)
+	- role_id (FK)
+	- permission_id (FK)
+3. Employees
+	- id (PK)
+	- employee_id (unique)
+	- first_name
+	- last_name
+	- email
+	- phone
+	- gender
+	- date_of_birth
+	- address
+	- hire_date
+	- department_id (FK)
+	- position_id (FK)
+	- status (active, inactive, terminated)
+	- profile_photo
+	- created_at
+	- updated_at
+4. departments
+	- id (PK)
+	- name
+	- description
+	- created_at
+	- updated_at
+5. positions
+	- id (PK)
+	- department_id (FK)
+	- title
+	- description
+	- created_at
+	- updated_at
+6. attendances
+	- id (PK)
+	- employee_id (FK)
+	- date
+	- check_in
+	- check_out
+	- status (present, absent, late)
+	- created_at
+	- updated_at
+7. Leave Management	
+	leave_types
+	- id (PK)
+	- name (Sick Leave, Vacation)
+	- days_allowed
+	- created_at
+	- updated_at
+
+	leaves
+	- id (PK)
+	- employee_id (FK)
+	- leave_type_id (FK)
+	- start_date
+	- end_date
+	- reason
+	- status (pending, approved, rejected)
+	- approved_by (FK → users.id)
+	- created_at
+	- updated_at
+8. payrolls
+	- id (PK)
+	- employee_id (FK)
+	- basic_salary
+	- bonus
+	- deductions
+	- net_salary
+	- pay_date
+	- created_at
+	- updated_at
+
+9. payslips
+	- id (PK)
+	- payroll_id (FK)
+	- generated_at
+	- file_path
+	- created_at
+	- updated_at
+10. notifications
+	- id (PK)
+	- user_id (FK)
+	- title
+	- message
+	- is_read
+	- created_at
+	- updated_at
+11. activity_logs
+	- id (PK)
+	- user_id (FK)
+	- action
+	- description
+	- ip_address
+	- created_at
+
+Creaate migrations and seeder
+11. announcementss
+	- id (PK)
+	- user_id (FK)
+	- title
+	- content
+	- created_by
+	- created_at
+
+Creaate migrations and seeder
+11. Projects
+	- id (PK)
+	- user_id (FK)
+	- title
+	- client
+	- details
+	- project_start_date
+	- project_end_date
+	- status
+	- created_at
+
+
+Key Relationships
+users → roles (Many-to-One)
+roles ↔ permissions (Many-to-Many)
+employees → departments (Many-to-One)
+employees → positions (Many-to-One)
+positions → departments (Many-to-One)
+attendances → employees (Many-to-One)
+leaves → employees (Many-to-One)
+leaves → leave_types (Many-to-One)
+leaves → users (approved_by) (Many-to-One)
+payrolls → employees (Many-to-One)
+payslips → payrolls (One-to-One / One-to-Many)
+notifications → users (Many-to-One)
+activity_logs → users (Many-to-One)
+
+can you generate migrations for all tables
+
+generate realistic and structured dummy data
+General Requirements:
+	Use seeders and factories
+	Maintain data integrity and relationships (foreign keys)
+	Use realistic names, emails, dates, and values
+	Ensure variation in statuses and roles
+	Avoid duplicate unique fields (emails, employee_id)
+	Seed at least 50–100 employees for meaningful data
+
+Seeding Scope:
+	
+1. Roles & Permissions
+	Create roles:
+		Admin
+		HR Manager
+	Create permissions:
+		manage_employees
+		manage_attendance
+		manage_leaves
+		manage_payroll
+		view_reports
+		Assign all permissions to Admin
+		Assign limited permissions to HR Manager
+2. Users (Admin Accounts)
+	Seed at least:
+		1 Super Admin
+		2 HR Managers
+	Use realistic emails (e.g., admin@company.com)
+	Password: hashed (e.g., bcrypt('password'))
+3. Departments
+	Seed 5–10 departments:
+		Human Resources
+		IT
+		Finance
+		Marketing
+		Operations
+4. Positions
+	For each department, create 2–4 positions:
+		Example (IT): Developer, QA Engineer, DevOps
+5. Employees
+	Generate 50–100 employees:
+		Random Filipino and international names
+		Unique employee IDs (e.g., EMP0001)
+		Assign department and position
+		Random hire dates (past 5 years)
+		Status distribution:
+			80% active
+			15% inactive
+			5% terminated
+6. Attendance
+	For each employee:
+		Generate attendance for the last 30 days
+		Include:
+			check_in (8:00–9:30 AM)
+			check_out (5:00–7:00 PM)
+		Random status:
+			present (majority)
+			late
+			absent (less frequent)
+7. Leave Types
+	Seed:
+		Sick Leave (10 days)
+		Vacation Leave (15 days)
+		Emergency Leave (5 days)
+8. Leaves
+	Generate leave records for ~30% of employees:
+		Random date ranges
+		Random status:
+			pending
+			approved
+			rejected
+		Assign approved_by to Admin users
+9. Payroll
+	For each employee:
+		Generate salary data:
+			basic_salary (based on position range)
+			bonus (optional random)
+			deductions (tax, absences)
+		Calculate net_salary = basic + bonus - deductions
+		Monthly payroll for last 3–6 months
+10. Payslips
+	Generate payslips for each payroll record:
+		Include file path (dummy PDF path)
+11. Notifications
+	Create notifications for:
+		Leave approvals/rejections
+		Payroll generation
+	Assign to users (admins)
+12. Activity Logs
+	Log actions such as:
+		"Created employee"
+		"Approved leave"
+		"Generated payroll"
+	Include IP address and timestamps
+
+Technical Instructions:
+	Use Faker for realistic data generation
+	Use Carbon for date handling
+	Follow proper seeder execution order:
+		Roles & Permissions
+		Users
+		Departments & Positions
+		Employees
+		Attendance
+		Leave Types & Leaves
+		Payroll & Payslips
+		Notifications & Logs
+
+Expected Output:
+	Fully populated database
+	Relational consistency
+	Ready-to-use admin dashboard data for testing and demos
+
+Create Dashboard Page
+- Display real-time statistics:
+- Total employees
+- total Employees on leave 
+- Department count
+- Pending approvals (employees & leaves)
+- Recent Projects in table (project name, progress, start date)
+-Use charts (Chart.js) for dashboard stats
+
+Create Employee Page
+- View all employees (paginated, searchable)
+- Add employee (auto-approved option)
+- Edit employee details
+- Delete employees
+
+Create departments Page
+- View all departments (paginated, searchable)
+- Add departments (auto-approved option)
+- Edit departments details
+- Delete departments
+
+Create Positions Page
+- View all Positions (paginated, searchable)
+- Add Positions
+- Edit Positions details
+- Delete Positions
+
+Create Attendance Page
+- View all Attendance (paginated, searchable)
+- Add Attendance
+- Edit Attendance details
+- Delete Attendance
+
+Create Leave Page
+- View all Leave (paginated, searchable)
+- Add Leave
+- Edit Leave details
+- Delete Leave
+
+Create payrolls Page
+- View all payrolls (paginated, searchable)
+- Add payrolls
+- Edit payrolls details
+- Delete payrolls
+
+Create payslips Page
+- View all payslips (paginated, searchable)
+- Add payslips
+- Edit payslips details
+- Delete payslips
+
+Create Projects Page
+- View all Projects (paginated, searchable)
+- Add Projects
+- Edit Projects details
+- Delete Projects
+
+

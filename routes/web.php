@@ -1,0 +1,115 @@
+<?php
+
+use App\Http\Controllers\AnnouncementController;
+use App\Http\Controllers\AttendanceController;
+use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\EmployeeController;
+use App\Http\Controllers\LeaveController;
+use App\Http\Controllers\PayrollController;
+use App\Http\Controllers\PayslipController;
+use App\Http\Controllers\PositionController;
+use App\Http\Controllers\ProjectController;
+use Illuminate\Support\Facades\Route;
+use Laravel\Fortify\Features;
+
+Route::inertia('/', 'welcome', [
+    'canRegister' => Features::enabled(Features::registration()),
+])->name('home');
+
+Route::prefix('api')->group(function () {
+    Route::get('employees', [EmployeeController::class, 'index']);
+    Route::post('employees', [EmployeeController::class, 'store']);
+    Route::get('employees/options', [EmployeeController::class, 'getOptions']);
+    Route::get('employees/{id}', [EmployeeController::class, 'show']);
+    Route::put('employees/{id}', [EmployeeController::class, 'update']);
+    Route::delete('employees/{id}', [EmployeeController::class, 'destroy']);
+    Route::get('departments', [DepartmentController::class, 'index']);
+    Route::post('departments', [DepartmentController::class, 'store']);
+    Route::get('departments/{id}', [DepartmentController::class, 'show']);
+    Route::put('departments/{id}', [DepartmentController::class, 'update']);
+    Route::delete('departments/{id}', [DepartmentController::class, 'destroy']);
+    Route::get('positions', [PositionController::class, 'index']);
+    Route::post('positions', [PositionController::class, 'store']);
+    Route::get('positions/{id}', [PositionController::class, 'show']);
+    Route::put('positions/{id}', [PositionController::class, 'update']);
+    Route::delete('positions/{id}', [PositionController::class, 'destroy']);
+    Route::get('attendance', [AttendanceController::class, 'index']);
+    Route::post('attendance', [AttendanceController::class, 'store']);
+    Route::get('attendance/{id}', [AttendanceController::class, 'show']);
+    Route::put('attendance/{id}', [AttendanceController::class, 'update']);
+    Route::delete('attendance/{id}', [AttendanceController::class, 'destroy']);
+    Route::get('leave', [LeaveController::class, 'index']);
+    Route::post('leave', [LeaveController::class, 'store']);
+    Route::get('leave/{id}', [LeaveController::class, 'show']);
+    Route::put('leave/{id}', [LeaveController::class, 'update']);
+    Route::delete('leave/{id}', [LeaveController::class, 'destroy']);
+    Route::get('payroll', [PayrollController::class, 'index']);
+    Route::post('payroll', [PayrollController::class, 'store']);
+    Route::get('payroll/{id}', [PayrollController::class, 'show']);
+    Route::put('payroll/{id}', [PayrollController::class, 'update']);
+    Route::delete('payroll/{id}', [PayrollController::class, 'destroy']);
+    Route::get('payslip', [PayslipController::class, 'index']);
+    Route::post('payslip', [PayslipController::class, 'store']);
+    Route::get('payslip/{id}', [PayslipController::class, 'show']);
+    Route::put('payslip/{id}', [PayslipController::class, 'update']);
+    Route::delete('payslip/{id}', [PayslipController::class, 'destroy']);
+    Route::get('announcements', [AnnouncementController::class, 'index']);
+    Route::post('announcements', [AnnouncementController::class, 'store']);
+    Route::get('announcements/{id}', [AnnouncementController::class, 'show']);
+    Route::put('announcements/{id}', [AnnouncementController::class, 'update']);
+    Route::delete('announcements/{id}', [AnnouncementController::class, 'destroy']);
+    Route::get('projects', [ProjectController::class, 'index']);
+    Route::post('projects', [ProjectController::class, 'store']);
+    Route::get('projects/{id}', [ProjectController::class, 'show']);
+    Route::put('projects/{id}', [ProjectController::class, 'update']);
+    Route::delete('projects/{id}', [ProjectController::class, 'destroy']);
+});
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::inertia('dashboard', 'dashboard')->name('dashboard');
+    Route::get('api/dashboard', [DashboardController::class, 'index']);
+    Route::get('employees', [EmployeeController::class, 'index'])->name('employees');
+    Route::get('departments', [DepartmentController::class, 'index'])->name('departments');
+    Route::post('departments', [DepartmentController::class, 'store']);
+    Route::get('departments/{id}', [DepartmentController::class, 'show']);
+    Route::put('departments/{id}', [DepartmentController::class, 'update']);
+    Route::delete('departments/{id}', [DepartmentController::class, 'destroy']);
+    Route::get('positions', [PositionController::class, 'index'])->name('positions');
+    Route::post('positions', [PositionController::class, 'store']);
+    Route::get('positions/{id}', [PositionController::class, 'show']);
+    Route::put('positions/{id}', [PositionController::class, 'update']);
+    Route::delete('positions/{id}', [PositionController::class, 'destroy']);
+    Route::get('attendance', [AttendanceController::class, 'index'])->name('attendance');
+    Route::post('attendance', [AttendanceController::class, 'store']);
+    Route::get('attendance/{id}', [AttendanceController::class, 'show']);
+    Route::put('attendance/{id}', [AttendanceController::class, 'update']);
+    Route::delete('attendance/{id}', [AttendanceController::class, 'destroy']);
+    Route::get('leave', [LeaveController::class, 'index'])->name('leave');
+    Route::post('leave', [LeaveController::class, 'store']);
+    Route::get('leave/{id}', [LeaveController::class, 'show']);
+    Route::put('leave/{id}', [LeaveController::class, 'update']);
+    Route::delete('leave/{id}', [LeaveController::class, 'destroy']);
+    Route::get('payroll', [PayrollController::class, 'index'])->name('payroll');
+    Route::post('payroll', [PayrollController::class, 'store']);
+    Route::get('payroll/{id}', [PayrollController::class, 'show']);
+    Route::put('payroll/{id}', [PayrollController::class, 'update']);
+    Route::delete('payroll/{id}', [PayrollController::class, 'destroy']);
+    Route::get('payslip', [PayslipController::class, 'index'])->name('payslip');
+    Route::post('payslip', [PayslipController::class, 'store']);
+    Route::get('payslip/{id}', [PayslipController::class, 'show']);
+    Route::put('payslip/{id}', [PayslipController::class, 'update']);
+    Route::delete('payslip/{id}', [PayslipController::class, 'destroy']);
+    Route::get('announcements', [AnnouncementController::class, 'index'])->name('announcements');
+    Route::post('announcements', [AnnouncementController::class, 'store']);
+    Route::get('announcements/{id}', [AnnouncementController::class, 'show']);
+    Route::put('announcements/{id}', [AnnouncementController::class, 'update']);
+    Route::delete('announcements/{id}', [AnnouncementController::class, 'destroy']);
+    Route::get('projects', [ProjectController::class, 'index'])->name('projects');
+    Route::post('projects', [ProjectController::class, 'store']);
+    Route::get('projects/{id}', [ProjectController::class, 'show']);
+    Route::put('projects/{id}', [ProjectController::class, 'update']);
+    Route::delete('projects/{id}', [ProjectController::class, 'destroy']);
+});
+
+require __DIR__.'/settings.php';
